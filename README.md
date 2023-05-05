@@ -4,6 +4,13 @@ Modifies PDF metadata (for EPS-UAH SGIC). There are two scripts here (`go.mod-me
 
 The scripts do the modification in place, after generating a backup of the original file (named as DATE-filename.pdf).
 
+Right now you manually hard code new values for the following fields:
+
++ Creator
++ Title
++ Author
++ Subject
+
 It was created for the EPS-UAH SGIC team.
 
 ## Requirements
