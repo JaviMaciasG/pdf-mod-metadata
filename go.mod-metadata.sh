@@ -31,7 +31,9 @@ do
         echo "Error: provided file [$f] does not exist. Will continue..."
     else
         # Backup file
-        PDF_BACKUP_FILE=$DATE-$f
+        BASENAME=`basename $f`
+        DIRNAME=`dirname $f`
+        PDF_BACKUP_FILE=$DIRNAME/$DATE-$BASENAME
         echo "Processing [$f], backing it up to [$PDF_BACKUP_FILE]..."
         cp $f $PDF_BACKUP_FILE
 
