@@ -17,13 +17,18 @@ DATE=`date +%C%y%m%d%H%M%S`
 
 for f in $*
 do
-    # Backup file
-    PDF_BACKUP_FILE=$DATE-$f
-    echo "Processing [$f], backing it up to [$PDF_BACKUP_FILE]..."
-    cp $f $PDF_BACKUP_FILE
+    if [ ! -f $f ]
+    then
+        echo "Error: provided file [$f] does not exist. Will continue..."
+    else
+        # Backup file
+        PDF_BACKUP_FILE=$DATE-$f
+        echo "Processing [$f], backing it up to [$PDF_BACKUP_FILE]..."
+        cp $f $PDF_BACKUP_FILE
 
-    # Modify metadata
-    TMP_FILE=`mktemp`
-    $MDATA_EDITOR -Title="$DOC_TITLE" -Author="$DOC_AUTHOR" -Subject="$DOC_SUBJECT" -Creator="$DOC_CREATOR" $f
+        # Modify metadata
+        TMP_FILE=`mktemp`
+        $MDATA_EDITOR -Title="$DOC_TITLE" -Author="$DOC_AUTHOR" -Subject="$DOC_SUBJECT" -Creator="$DOC_CREATOR" $f
+    fi
 
 done
