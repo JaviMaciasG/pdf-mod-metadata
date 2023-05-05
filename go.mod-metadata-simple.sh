@@ -8,11 +8,13 @@ then
     exit 1
 fi
 
+# Change here the new metadata to use
 DOC_AUTHOR="SGIC Escuela Politécnica Superior UAH"
 DOC_TITLE="SGIC EPS-UAH document"
 DOC_SUBJECT="SGIC EPS-UAH"
 DOC_CREATOR=$DOC_AUTHOR
 
+# For the backup file creation
 DATE=`date +%C%y%m%d%H%M%S`
 
 for f in $*
@@ -27,7 +29,6 @@ do
         cp $f $PDF_BACKUP_FILE
 
         # Modify metadata
-        TMP_FILE=`mktemp`
         $MDATA_EDITOR -Title="$DOC_TITLE" -Author="$DOC_AUTHOR" -Subject="$DOC_SUBJECT" -Creator="$DOC_CREATOR" $f
     fi
 
