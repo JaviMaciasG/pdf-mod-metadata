@@ -1,19 +1,18 @@
 #!/usr/bin/env sh
 
+MDATA_EDITOR="exiftool -overwrite_original_in_place"
+VERBOSE=0
 
-MDATA_EDITOR=exiftool
-PDFTK=pdftk
-HAS_PDFTK=1
+if [ "$*" == "" ]
+then
+    echo "Error: Must provide list of pdf files. Exiting..."
+    exit 1
+fi
 
 if [ "`which $MDATA_EDITOR`" == "" ]
 then
     echo "Error: Must have exiftool installed. Exiting..."
     exit 2
-fi
-if [ "`which $PDFTK`" == "" ]
-then
-    echo "Warning: [$PDFTK] not installed. Will continue as it is not required but funcionality is reduced"
-    HAS_PDFTK=0
 fi
 
 DOC_AUTHOR="SGIC Escuela Politécnica Superior UAH"
@@ -30,12 +29,12 @@ do
     echo "Processing [$f], backing it up to [$PDF_BACKUP_FILE]..."
     cp $f $PDF_BACKUP_FILE
 
-    if [ $HAS_PDFTK -eq 1 ]
+    if [ $VERBOSE -ne 0 ]
     then
-        ORIG_AUTHOR=`pdftk $f dump_data | awk -F: '/^InfoKey: Author/ {getline; gsub(/^[ \t]+/,"",$0); print $0}'`
-        ORIG_TITLE=`pdftk $f dump_data | awk -F: '/^InfoKey: Title/ {getline; gsub(/^[ \t]+/,"",$0); print $0}'`
-        ORIG_SUBJECT=`pdftk $f dump_data | awk -F: '/^InfoKey: Subject/ {getline; gsub(/^[ \t]+/,"",$0); print $0}'`
-        ORIG_CREATOR=`pdftk $f dump_data | awk -F: '/^InfoKey: Creator/ {getline; gsub(/^[ \t]+/,"",$0); print $0}'`
+        ORIG_AUTHOR=`$MDATA_EDITOR $f -Author | cut -f 2- -d ":" | cut -f 2- -d " "`
+        ORIG_TITLE=`$MDATA_EDITOR $f -Title | cut -f 2- -d ":" | cut -f 2- -d " "`
+        ORIG_SUBJECT=`$MDATA_EDITOR $f -Subject | cut -f 2- -d ":" | cut -f 2- -d " "`
+        ORIG_CREATOR=`$MDATA_EDITOR $f -Creator | cut -f 2- -d ":" | cut -f 2- -d " "`
 
         echo "  Changing author  from [$ORIG_AUTHOR] to [$DOC_AUTHOR]"
         echo "  Changing title   from [$ORIG_TITLE] to [$DOC_TITLE]"
