@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/bash
 
 MDATA_EDITOR="exiftool -overwrite_original_in_place"
 VERBOSE=0
